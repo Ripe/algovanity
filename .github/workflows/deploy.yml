@@ -1,0 +1,36 @@
+name: Deploy Production
+on: [push]
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up NodeJS 14 LTS
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Cache node_modules
+        uses: actions/cache@v2.0.0
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ env.cache-name }}-
+            ${{ runner.os }}-node-
+            ${{ runner.os }}-
+      - name: Build
+        run: npm install && npm run build
+      - name: Deploy
+        uses: reggionick/s3-deploy@v3
+        with:
+          folder: public
+          bucket: '${{ secrets.S3_BUCKET }}'
+          bucket-region: '${{ secrets.S3_BUCKET_REGION }}'
+          dist-id: '${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}'
+          invalidation: /
+          delete-removed: true
+          no-cache: true
+          private: true

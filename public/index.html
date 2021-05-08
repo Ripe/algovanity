@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#fff" />
+    <title>Algorand Vanity Address Generator</title>
+    <meta
+      name="description"
+      content="Algo Vanity is a web-based tool for generating Algorand vanity addresses."
+    />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <link rel="stylesheet" href="/build/bundle.css" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="modulepreload" href="/build/algo.worker.js" />
+    <script defer src="/build/bundle.js"></script>
+  </head>
+  <body>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js');
+      }
+    </script>
+  </body>
+</html>
