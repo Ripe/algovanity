@@ -19,7 +19,7 @@
           >Reveal Passphrase</Button
         >
         <h3 class="heading">
-          Recovery passpharse
+          Recovery passphrase
           <Button
             variant="small"
             onClick={() => navigator.clipboard.writeText(match.mnemonic)}
