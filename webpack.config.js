@@ -10,6 +10,10 @@ module.exports = {
     alias: {
       svelte: path.dirname(require.resolve('svelte/package.json')),
     },
+    fallback: {
+      crypto: require.resolve('crypto-browserify'),
+      stream: require.resolve('stream-browserify'),
+    },
     extensions: ['.mjs', '.js', '.svelte'],
     mainFields: ['svelte', 'browser', 'module', 'main'],
   },
@@ -56,5 +60,6 @@ module.exports = {
   devtool: prod ? false : 'source-map',
   devServer: {
     hot: false,
+    static: path.resolve(__dirname, 'public'),
   },
 };
