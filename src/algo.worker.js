@@ -4,7 +4,7 @@ const STEP = 10;
 
 self.onmessage = (e) => {
   if (e.data) {
-    const { method, keyword } = e.data;
+    const { method = 'includes', keyword } = e.data;
     let attempts = 0;
 
     const checkAddress = (address) => {
@@ -12,16 +12,7 @@ self.onmessage = (e) => {
         return false;
       }
 
-      switch (method) {
-        case 'startsWith':
-          return address.startsWith(keyword);
-
-        case 'endsWith':
-          return address.endsWith(keyword);
-
-        default:
-          return address.includes(keyword);
-      }
+      return address[method](keyword);
     };
 
     setInterval(() => {

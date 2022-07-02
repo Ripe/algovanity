@@ -41,7 +41,7 @@
     <ExternalLink
       href="https://www.algorand.com/resources/blog/rekeying-with-ledger-nano-x-tutorial"
     >
-      How to rekey to a Ledger device
+      How to rekey to a Ledger Nano X device
     </ExternalLink>
   </p>
 </div>

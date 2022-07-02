@@ -32,7 +32,7 @@
           {/each}
         </ol>
         <ExternalLink
-          href="https://www.algorandwallet.com/support/getting-started/recover-an-algorand-account/"
+          href="https://support.perawallet.app/en/article/recover-an-algorand-account-11gdh1y/"
         >
           Follow these instructions on how to recover an Algorand account using
           the official wallet.

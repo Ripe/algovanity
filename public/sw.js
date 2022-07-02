@@ -1,4 +1,4 @@
-var cacheName = 'algovanity::2021-05-05';
+var cacheName = 'algovanity::2022-07-02';
 
 self.addEventListener('install', function (e) {
   e.waitUntil(
