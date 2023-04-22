@@ -36,18 +36,44 @@ self.addEventListener('activate', function (event) {
 });
 
 self.addEventListener('fetch', function (event) {
+  if (!event.request.url.startsWith('http')) {
+    return;
+  }
+
   event.respondWith(
-    (async function () {
-      try {
-        let res = await fetch(event.request);
-        let cache = await caches.open(cacheName);
-
-        await cache.put(event.request.url, res.clone());
-
-        return res;
-      } catch (error) {
-        return caches.match(event.request);
-      }
-    })()
+    new Promise(function (resolve, reject) {
+      fetch(event.request)
+        .then(function (res) {
+          caches
+            .open(cacheName)
+            .then(function (cache) {
+              cache
+                .put(event.request.url, res.clone())
+                .then(function () {
+                  resolve(res);
+                })
+                .catch(function (error) {
+                  reject(error);
+                });
+            })
+            .catch(function (error) {
+              reject(error);
+            });
+        })
+        .catch(function () {
+          caches
+            .match(event.request)
+            .then(function (cachedResponse) {
+              if (cachedResponse) {
+                resolve(cachedResponse);
+              } else {
+                reject();
+              }
+            })
+            .catch(function (error) {
+              reject(error);
+            });
+        });
+    })
   );
 });
