@@ -1,10 +1,6 @@
 <script>
-  import Address from './Address.svelte';
-  import Modal from './Modal.svelte';
-  import QRCode from './QRCode.svelte';
   import ExternalLink from './ExternalLink.svelte';
-  import Button from './Button.svelte';
-  import { CONTACT_EMAIL, TIP_ADDRESS } from './constants';
+  import { CONTACT_EMAIL } from './constants';
 </script>
 
 <div class="footer">
@@ -15,26 +11,6 @@
       <ExternalLink href="https://github.com/Ripe/algovanity"
         >Source</ExternalLink
       >
-    </li>
-    <li>
-      <Modal let:open>
-        <Button slot="trigger" variant="link" onClick={open}>Tip</Button>
-        <h3>Tip</h3>
-        <p>
-          I really appreciate any tips made in ALGO, all tips will go towards
-          keeping the website up and future projects.
-        </p>
-        <div class="tip">
-          <div class="qr">
-            <QRCode
-              text={'algorand://' + TIP_ADDRESS}
-              width={256}
-              height={256}
-            />
-          </div>
-          <Address address={TIP_ADDRESS} />
-        </div>
-      </Modal>
     </li>
   </ul>
 
@@ -54,18 +30,9 @@
     margin: 16px 16px 0;
   }
 
-  .qr {
-    margin-bottom: 32px;
-  }
-
-  .tip {
-    text-align: center;
-    margin-top: 32px;
-  }
-
   .disclaimer {
     color: #717171;
-    font-size: 13px;
+    font-size: 12px;
     margin-top: 16px;
   }
 

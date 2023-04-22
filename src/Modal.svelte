@@ -17,10 +17,15 @@
 {#if opened}
   <div
     class="modal-overlay"
+    role="presentation"
     on:click={close}
     transition:fade={{ duration: 150 }}
   >
-    <div class="modal" on:click={(e) => e.stopPropagation()}>
+    <div
+      class="modal"
+      role="presentation"
+      on:click={(e) => e.stopPropagation()}
+    >
       <slot />
     </div>
   </div>

@@ -1,65 +1,66 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
-const mode = process.env.NODE_ENV || 'development';
-const prod = mode === 'production';
+module.exports = (env, argv) => {
+  const isProd = argv.mode === 'production';
 
-module.exports = {
-  entry: { 'build/bundle': './src/main.js' },
-  resolve: {
-    alias: {
-      svelte: path.dirname(require.resolve('svelte/package.json')),
+  return {
+    entry: { 'build/bundle': './src/main.js' },
+    resolve: {
+      alias: {
+        svelte: path.dirname(require.resolve('svelte/package.json')),
+      },
+      extensions: ['.mjs', '.js', '.svelte'],
+      mainFields: ['svelte', 'browser', 'module', 'main'],
+      conditionNames: ['svelte', 'require', 'node'],
     },
-    fallback: {
-      crypto: require.resolve('crypto-browserify'),
-      stream: require.resolve('stream-browserify'),
+    output: {
+      path: path.join(__dirname, '/public'),
+      filename: '[name].js',
+      chunkFilename: '[name].[id].js',
     },
-    extensions: ['.mjs', '.js', '.svelte'],
-    mainFields: ['svelte', 'browser', 'module', 'main'],
-  },
-  output: {
-    path: path.join(__dirname, '/public'),
-    filename: '[name].js',
-    chunkFilename: '[name].[id].js',
-  },
-  module: {
-    rules: [
-      {
-        test: /\.svelte$/,
-        use: {
-          loader: 'svelte-loader',
-          options: {
-            compilerOptions: {
-              dev: !prod,
+    stats: {
+      children: true,
+    },
+    module: {
+      rules: [
+        {
+          test: /\.svelte$/,
+          use: {
+            loader: 'svelte-loader',
+            options: {
+              compilerOptions: {
+                dev: !isProd,
+              },
+              emitCss: isProd,
             },
-            emitCss: prod,
           },
         },
-      },
-      {
-        test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
-      },
-      {
-        test: /\.worker\.js$/,
-        use: {
-          loader: 'worker-loader',
-          options: {
-            filename: 'build/[name].js',
+        {
+          test: /\.css$/,
+          use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        },
+        {
+          test: /\.worker\.js$/,
+          use: {
+            loader: 'worker-loader',
+            options: {
+              esModule: false,
+              filename: 'build/[name].js',
+            },
           },
         },
-      },
+      ],
+    },
+    plugins: [
+      new MiniCssExtractPlugin({
+        filename: '[name].css',
+      }),
     ],
-  },
-  mode,
-  plugins: [
-    new MiniCssExtractPlugin({
-      filename: '[name].css',
-    }),
-  ],
-  devtool: prod ? false : 'source-map',
-  devServer: {
-    hot: false,
-    static: path.resolve(__dirname, 'public'),
-  },
+    devtool: isProd ? false : 'source-map',
+    devServer: {
+      hot: false,
+      static: path.resolve(__dirname, 'public'),
+    },
+  };
 };
