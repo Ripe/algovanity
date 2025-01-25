@@ -4,7 +4,7 @@ const STEP = 10;
 
 self.onmessage = (e) => {
   if (e.data) {
-    const { method = 'includes', keyword } = e.data;
+    const { method = 'includes', keywords } = e.data;
     let attempts = 0;
 
     const checkAddress = (address) => {
@@ -12,7 +12,13 @@ self.onmessage = (e) => {
         return false;
       }
 
-      return address[method](keyword);
+      for (const keyword of keywords) {
+        if (address[method](keyword)) {
+          return true;
+        }
+      }
+
+      return false;
     };
 
     setInterval(() => {
@@ -22,17 +28,18 @@ self.onmessage = (e) => {
       }
 
       const account = generateAccount();
+      const address = account.addr.toString();
 
-      if (checkAddress(account.addr)) {
+      if (checkAddress(address)) {
         self.postMessage({
-          address: account.addr,
+          address,
           keyword: keyword,
           sk: account.sk,
-          mnemonic: secretKeyToMnemonic(account.sk),
+          mnemonic: secretKeyToMnemonic(account.sk)
         });
       }
 
       attempts++;
-    }, 1);
+    }, 10);
   }
 };

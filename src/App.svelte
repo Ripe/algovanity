@@ -1,5 +1,5 @@
 <script>
-  import AlgoWorker from './algo.worker';
+  import AlgoWorker from './algo-worker?worker&inline';
   import Header from './Header.svelte';
   import FAQs from './Faqs.svelte';
   import Results from './Results.svelte';
@@ -10,17 +10,38 @@
   import Box from './Box.svelte';
 
   let workers = [];
-  let matches = [];
-  let keyword = '';
-  let attempts = 0;
-  let method = 'includes';
-  let workerCount = navigator.hardwareConcurrency || 3;
-  let startTime = 0;
-  let isRunning = false;
+  let matches = $state([]);
+  let attempts = $state(0);
+  let startTime = $state(0);
+  let isRunning = $state(false);
 
-  $: keyword = keyword.toUpperCase().replace(/[^A-Z2-7]+$/gi, '');
+  function oninput(event) {
+    event.target.value = event.target.value.toUpperCase().replace(/[^A-Z2-7\,]+$/gi, '');
+  }
 
-  function start() {
+  function onsubmit(event) {
+    event.preventDefault();
+
+    if (isRunning) {
+      workers.forEach((worker) => worker.terminate());
+      attempts = 0;
+      workers = [];
+      isRunning = false;
+
+      return;
+    }
+
+    const formData = new FormData(event.target);
+    const keywords = formData
+      .get('keyword')
+      .split(',')
+      .map((k) => k.trim().toUpperCase())
+      .filter(Boolean);
+    const method = formData.get('method') || 'includes';
+    const workerCount = parseInt(formData.get('workerCount'));
+
+    if (!keywords.length) return;
+
     for (let i = 0; i < workerCount; i++) {
       workers.push(new AlgoWorker());
 
@@ -32,19 +53,11 @@
         }
       };
 
-      workers[i].postMessage({ method, keyword });
+      workers[i].postMessage({ method, keywords });
     }
 
     startTime = Date.now();
-
     isRunning = true;
-  }
-
-  function stop() {
-    workers.forEach((worker) => worker.terminate());
-    attempts = 0;
-    workers = [];
-    isRunning = false;
   }
 </script>
 
@@ -54,37 +67,43 @@
     <div>
       <Box>
         <h2>Search</h2>
-        <FormControl
-          id="keyword"
-          label="Keyword"
-          disabled={isRunning}
-          note="Your text can only include letters A - Z and numbers 2 - 7. For the fastest results, keep your text under 5 characters long."
-          bind:value={keyword}
-        />
-        <FormControl
-          id="match"
-          label="Match method"
-          type="radio"
-          disabled={isRunning}
-          options={[
-            { value: 'startsWith', label: 'Start' },
-            { value: 'includes', label: 'Anywhere (fastest)' },
-            { value: 'endsWith', label: 'End' },
-          ]}
-          bind:value={method}
-        />
-        <FormControl
-          id="workerCount"
-          label="Threads"
-          type="number"
-          disabled={isRunning}
-          bind:value={workerCount}
-        />
-        {#if !isRunning}
-          <Button onClick={start} disabled={keyword.length === 0}>Start</Button>
-        {:else}
-          <Button onClick={stop}>Stop</Button>
-        {/if}
+        <form {onsubmit}>
+          <FormControl
+            id="keywords"
+            name="keyword"
+            label="Keywords (comma-separated)"
+            disabled={isRunning}
+            note="Enter multiple keywords separated by commas. Each keyword can only contain letters (A-Z) and numbers (2-7) and should be less than 5 characters for optimal performance."
+            required
+            {oninput}
+          />
+          <FormControl
+            id="match"
+            name="method"
+            label="Match method"
+            type="radio"
+            disabled={isRunning}
+            options={[
+              { value: 'startsWith', label: 'Start' },
+              { value: 'includes', label: 'Anywhere (fastest)' },
+              { value: 'endsWith', label: 'End' }
+            ]}
+            value="includes"
+          />
+          <FormControl
+            id="workerCount"
+            name="workerCount"
+            label="Web workers"
+            type="number"
+            min="1"
+            disabled={isRunning}
+            value={navigator.hardwareConcurrency || 3}
+            note="The higher this number, the more CPU resources the search will require."
+          />
+          <Button type="submit">
+            {isRunning ? 'Stop' : 'Start'}
+          </Button>
+        </form>
       </Box>
       <Box>
         <Stats matches={matches.length} {attempts} {startTime} />
@@ -114,16 +133,16 @@
     line-height: 1.2;
     font-size: 16px;
     box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-      Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu,
+      Cantarell, 'Helvetica Neue', sans-serif;
   }
 
   :global(h1, h2, h3) {
-    margin: 0 0 16px;
+    margin: 0 0 1rem;
   }
 
   :global(p) {
-    margin: 0 0 8px;
+    margin: 0 0 0.5rem;
     line-height: 1.5;
   }
 
@@ -138,19 +157,19 @@
 
   main {
     margin: 0 auto;
-    padding: 16px;
+    padding: 1rem;
   }
 
   @media (min-width: 960px) {
     main {
       max-width: 960px;
-      padding: 32px 16px;
+      padding: 2rem 1rem;
     }
 
     .wrapper {
       display: grid;
       grid-template-columns: 1fr 2fr;
-      grid-column-gap: 16px;
+      grid-column-gap: 1rem;
     }
 
     .results {

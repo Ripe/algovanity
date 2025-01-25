@@ -1,7 +1,7 @@
 <script>
-  export let href;
+  let { children, ...rest } = $props();
 </script>
 
-<a {href} target="_blank" rel="noopener">
-  <slot />
+<a target="_blank" rel="noopener" {...rest}>
+  {@render children?.()}
 </a>

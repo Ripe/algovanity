@@ -1,11 +1,5 @@
 <script>
-  export let id;
-  export let label;
-  export let value;
-  export let type = 'text';
-  export let note = undefined;
-  export let options = [];
-  export let disabled = false;
+  let { id, label, type = 'text', note, value, options = [], ...rest } = $props();
 </script>
 
 <div class="control">
@@ -13,22 +7,13 @@
     <div class="label">{label}</div>
     {#each options as option}
       <label class="radio">
-        <input
-          type="radio"
-          bind:group={value}
-          value={option.value}
-          {disabled}
-        />
+        <input type="radio" bind:group={value} value={option.value} {...rest} />
         <span>{option.label}</span>
       </label>
     {/each}
   {:else}
     <label for={id}>{label}</label>
-    {#if type === 'number'}
-      <input {id} {disabled} bind:value type="number" />
-    {:else}
-      <input {id} {disabled} bind:value type="text" />
-    {/if}
+    <input {id} {type} {value} {...rest} />
   {/if}
   {#if note}
     <p class="note">{note}</p>
@@ -40,13 +25,11 @@
   input[type='number'] {
     font-family: inherit;
     font-size: inherit;
-    padding: 4px;
-    height: 32px;
+    padding: 0.25rem;
     margin: 0;
     box-sizing: border-box;
     border: 1px solid #cccccc;
-    border-radius: 2px;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
     width: 100%;
   }
 
@@ -55,13 +38,13 @@
   }
 
   .control {
-    margin-bottom: 16px;
+    margin-bottom: 1rem;
   }
 
   label,
   .label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 0.5rem;
   }
 
   label[for],
@@ -70,21 +53,49 @@
   }
 
   .radio {
-    display: flex;
+    display: grid;
     align-items: center;
+    grid-template-columns: auto 1fr;
+    grid-gap: 0.5rem;
+  }
+
+  input[type='radio'] {
+    appearance: none;
+    background-color: #fff;
+    margin: 0;
+    color: currentColor;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    display: grid;
+    place-content: center;
+    transform: translateY(1px);
+  }
+
+  input[type='radio']::before {
+    content: '';
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    transform: scale(0);
+    transition: 120ms transform ease-in-out;
+    box-shadow: inset 1em 1em currentColor;
+  }
+
+  input[type='radio']:checked::before {
+    transform: scale(1);
   }
 
   .radio span {
-    margin-left: 8px;
     white-space: nowrap;
-    width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
   .note {
-    margin-top: 8px;
-    font-size: 13px;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
     color: #717171;
   }
 </style>

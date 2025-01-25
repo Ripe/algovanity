@@ -4,51 +4,51 @@
   import ExternalLink from './ExternalLink.svelte';
 </script>
 
-<h2>FAQs</h2>
 <div class="question">
   <h3>What is a vanity address?</h3>
   <p>
-    A vanity address is just a regular Algorand address but you've chosen to
-    include a specific keyword somewhere in the identifier. e.g.
+    A vanity address is a standard Algorand address that has been customized to include a specific
+    keyword or pattern within its identifier. For example:
   </p>
   <p>
     <Address keyword="MONEY" address={TIP_ADDRESS} />
-  </p>
-  <p>
-    Once you've picked an address you can use it for sending and receiving <strong
-      >ALGO</strong
-    >!
   </p>
 </div>
 <div class="question">
   <h3>How does this tool work?</h3>
   <p>
-    Addresses are randomly generated and checked for a match against your
-    keyword. Depending on the length of your keyword, the process may take a few
-    seconds or a few hours. You can reveal the passphrase on any matching
-    address to add it to your own Algorand wallet.
+    Addresses are generated randomly and then checked to see if they contain your desired keyword.
+    The time it takes to find a matching address can vary based on the length of your keyword,
+    ranging from a few seconds to several hours. Once a matching address is found, you can reveal
+    its passphrase and import it into your Algorand wallet.
   </p>
 </div>
 <div class="question">
   <h3>Is this safe?</h3>
+  <p>Yes and no.</p>
   <p>
-    Yes, your address and passphrase are never transmitted over the network and
-    the address generation is done with the official Algorand SDK. Optionally,
-    after choosing an address you're able to rekey it to ensure no one has the
-    ability to use the address except you.
+    Yes, because your address and passphrase are never transmitted over the network, and the address
+    generation is performed locally using the official Algorand SDK. Additionally, the code is
+    open-source, meaning anyone can inspect it to verify its safety and transparency. You can also
+    optionally rekey the address to ensure that only you have the ability to use it.
+  </p>
+  <p>
+    No, because it's never entirely safe to use online tools for generating addresses or managing
+    private keys. Even with precautions, online environments can introduce risks. For maximum
+    security, always use trusted, offline tools and devices to protect your sensitive information.
   </p>
   <p>
     <ExternalLink
-      href="https://www.algorand.com/resources/blog/rekeying-with-ledger-nano-x-tutorial"
+      href="https://support.perawallet.app/en/article/how-to-rekey-an-algorand-account-with-pera-mobile-13ykjxs/"
     >
-      How to rekey to a Ledger Nano X device
+      How to rekey Algorand account with Pera Mobile
     </ExternalLink>
   </p>
 </div>
 
 <style>
   p {
-    margin-bottom: 16px;
+    margin-bottom: 1rem;
   }
 
   p:last-child {
@@ -56,6 +56,6 @@
   }
 
   .question + .question {
-    margin-top: 32px;
+    margin-top: 2rem;
   }
 </style>

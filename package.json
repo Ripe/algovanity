@@ -1,29 +1,28 @@
 {
   "name": "algovanity",
   "private": true,
+  "type": "module",
   "devDependencies": {
-    "algosdk": "^2.2.0",
-    "css-loader": "^6.7.3",
-    "husky": "^8.0.3",
-    "lint-staged": "^13.2.1",
-    "mini-css-extract-plugin": "^2.7.5",
-    "prettier": "^2.8.7",
-    "prettier-plugin-svelte": "^2.10.0",
-    "svelte": "^3.58.0",
-    "svelte-loader": "^3.1.7",
-    "webpack": "^5.80.0",
-    "webpack-cli": "^5.0.2",
-    "webpack-dev-server": "^4.13.3",
-    "worker-loader": "^3.0.8"
+    "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "algosdk": "^3.1.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.2",
+    "prettier": "^3.4.2",
+    "prettier-plugin-svelte": "^3.3.3",
+    "svelte": "^5.19.2",
+    "vite": "^6.0.11",
+    "vite-plugin-pwa": "^0.21.1"
   },
   "scripts": {
-    "build": "webpack --mode=production",
-    "dev": "webpack serve --mode=development",
+    "build": "vite build",
+    "dev": "vite",
+    "format": "prettier --write .",
+    "lint": "prettier --check .",
     "precommit": "lint-staged"
   },
   "lint-staged": {
     "*.{js,json,css,html,md,svelte}": [
-      "prettier --write",
+      "prettier --write .",
       "git add"
     ]
   }

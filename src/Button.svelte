@@ -1,16 +1,9 @@
 <script>
-  export let variant = undefined;
-  export let onClick = () => {};
-  export let disabled = false;
+  let { variant, children, ...rest } = $props();
 </script>
 
-<button
-  type="button"
-  class={variant}
-  on:click|preventDefault={onClick}
-  {disabled}
->
-  <slot />
+<button class={variant} {...rest}>
+  {@render children?.()}
 </button>
 
 <style>
@@ -21,13 +14,17 @@
     background: #000000;
     outline: none;
     margin: 0;
-    font-size: 18px;
+    font-size: inherit;
     font-weight: normal;
     text-transform: uppercase;
     letter-spacing: 1px;
-    padding: 8px 16px;
+    padding: 0.5rem 1rem;
     cursor: pointer;
     font-family: inherit;
+  }
+
+  button[type='submit'] {
+    width: 100%;
   }
 
   button:disabled {
@@ -58,7 +55,7 @@
   }
 
   .small {
-    padding: 6px 12px;
-    font-size: 13px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
   }
 </style>

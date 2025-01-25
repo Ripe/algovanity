@@ -1,7 +1,5 @@
 <script>
-  export let matches = 0;
-  export let attempts = 0;
-  export let startTime = Date.now();
+  let { matches = 0, attempts = 0, startTime = 0 } = $props();
 </script>
 
 <h2>Stats</h2>
@@ -12,9 +10,7 @@
   <dd>{attempts.toLocaleString()}</dd>
   <dt>Speed</dt>
   <dd>
-    {(
-      Math.floor((1000 * attempts) / (Date.now() - startTime)) || 0
-    ).toLocaleString()} addr/s
+    {(Math.floor((1000 * attempts) / (Date.now() - startTime)) || 0).toLocaleString()} addr/s
   </dd>
 </dl>
 
@@ -22,7 +18,7 @@
   dl {
     display: grid;
     grid-template-columns: 1fr 2fr;
-    grid-gap: 16px;
+    grid-gap: 1rem;
     margin: 0;
   }
 

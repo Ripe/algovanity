@@ -1,9 +1,5 @@
 <h1 class="header">
-  <a
-    class="logo"
-    href="https://algovanity.com"
-    title="Algorand Vanity Address Generator"
-  >
+  <a class="logo" href="https://algovanity.com" title="Algorand Vanity Address Generator">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 82">
       <path
         d="M60 51L42 82H28l28-48-5-17-37 65H0L47 0h12l6 20h13l-9 16 8 29 37-65h14L81 82H69l-9-31z"
@@ -15,7 +11,7 @@
 
 <style>
   .header {
-    margin-bottom: 32px;
+    margin-bottom: 2rem;
     font-weight: normal;
     text-align: center;
   }
@@ -36,7 +32,7 @@
     display: block;
     width: 128px;
     height: 82px;
-    margin-bottom: 16px;
+    margin-bottom: 1rem;
     fill: currentColor;
   }
 
@@ -46,7 +42,7 @@
     }
 
     .logo svg {
-      margin-right: 16px;
+      margin-right: 1rem;
       margin-bottom: 0;
     }
   }

@@ -1,56 +1,48 @@
 <script>
-  import { fade } from 'svelte/transition';
+  let { show = $bindable(), children } = $props();
 
-  function close() {
-    opened = false;
-  }
+  let dialog = $state();
 
-  function open() {
-    opened = true;
-  }
-
-  let opened = false;
+  $effect(() => {
+    if (show) dialog.showModal();
+  });
 </script>
 
-<slot name="trigger" {opened} {open} {close} />
-
-{#if opened}
-  <div
-    class="modal-overlay"
-    role="presentation"
-    on:click={close}
-    transition:fade={{ duration: 150 }}
-  >
-    <div
-      class="modal"
-      role="presentation"
-      on:click={(e) => e.stopPropagation()}
-    >
-      <slot />
-    </div>
-  </div>
-{/if}
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+<dialog
+  bind:this={dialog}
+  onclose={() => (show = false)}
+  onclick={(e) => {
+    if (e.target === dialog) dialog.close();
+  }}
+>
+  {@render children?.()}
+</dialog>
 
 <style>
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px);
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .modal {
-    position: relative;
+  dialog {
     background-color: #ffffff;
     width: 640px;
-    margin: 0 16px;
-    padding: 32px;
+    padding: 2rem;
+    border: 0;
+  }
+
+  dialog::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+  }
+
+  dialog[open] {
+    animation: zoom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes zoom {
+    from {
+      transform: scale(0.95);
+    }
+    to {
+      transform: scale(1);
+    }
   }
 </style>
