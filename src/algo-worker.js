@@ -14,11 +14,11 @@ self.onmessage = (e) => {
 
       for (const keyword of keywords) {
         if (address[method](keyword)) {
-          return true;
+          return keyword;
         }
       }
 
-      return false;
+      return null;
     };
 
     setInterval(() => {
@@ -29,11 +29,12 @@ self.onmessage = (e) => {
 
       const account = generateAccount();
       const address = account.addr.toString();
+	  const keyword = checkAddress(address);
 
-      if (checkAddress(address)) {
+      if (keyword) {
         self.postMessage({
           address,
-          keyword: keyword,
+          keyword,
           sk: account.sk,
           mnemonic: secretKeyToMnemonic(account.sk)
         });
