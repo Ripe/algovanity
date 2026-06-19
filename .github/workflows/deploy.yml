@@ -1,29 +1,44 @@
 name: Deploy Production
-on: [push]
+on:
+  push:
+    branches: [master]
 jobs:
   run:
     runs-on: ubuntu-latest
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.S3_BUCKET_REGION }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: '22'
-          cache: npm
+          node-version: 24
+          cache: 'npm'
       - name: Install dependencies
         run: npm install
       - name: Build
         run: npm run build
-      - name: Deploy
-        uses: reggionick/s3-deploy@v4
-        with:
-          folder: dist
-          bucket: '${{ secrets.S3_BUCKET }}'
-          bucket-region: '${{ secrets.S3_BUCKET_REGION }}'
-          dist-id: '${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}'
-          delete-removed: true
-          no-cache: true
-          private: true
+      - name: Deploy (HTML + revalidated files)
+        run: |
+          aws s3 sync dist/ "s3://${{ secrets.S3_BUCKET }}/" \
+            --region "${{ secrets.S3_BUCKET_REGION }}" \
+            --delete \
+            --cache-control "no-cache"
+      - name: Cache immutable assets
+        run: |
+          aws s3 cp dist/ "s3://${{ secrets.S3_BUCKET }}/" \
+            --recursive \
+            --region "${{ secrets.S3_BUCKET_REGION }}" \
+            --exclude "*" \
+            --include "*.woff" --include "*.woff2" \
+            --include "*.png" --include "*.ico" --include "*.svg" \
+            --include "*.js" --include "*.css" \
+            --exclude "sw.js" --exclude "registerSW.js" \
+            --cache-control "public, max-age=31536000, immutable"
+      - name: Invalidate CloudFront
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id "${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}" \
+            --paths "/*"
