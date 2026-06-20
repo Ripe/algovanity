@@ -17,19 +17,28 @@
     if (e.target === dialog) dialog.close();
   }}
 >
-  {@render children?.()}
+  <div class="modal-body">
+    {@render children?.()}
+  </div>
 </dialog>
 
 <style>
   dialog {
-    background-color: #ffffff;
+    background-color: var(--panel);
+    color: var(--text);
     width: 640px;
+    max-width: calc(100vw - 2rem);
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 0;
+  }
+
+  .modal-body {
     padding: 2rem;
-    border: 0;
   }
 
   dialog::backdrop {
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(4px);
   }
 
@@ -39,10 +48,16 @@
 
   @keyframes zoom {
     from {
-      transform: scale(0.95);
+      transform: scale(0.97);
     }
     to {
       transform: scale(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    dialog[open] {
+      animation: none;
     }
   }
 </style>

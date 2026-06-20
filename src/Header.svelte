@@ -1,49 +1,31 @@
-<h1 class="header">
-  <a class="logo" href="https://algovanity.com" title="Algorand Vanity Address Generator">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 82">
+<div class="brand">
+  <a href="https://algovanity.com" aria-label="AlgoVanity — Algorand Vanity Address Generator">
+    <svg class="logo" viewBox="0 0 128 82" fill="currentColor" aria-hidden="true">
       <path
         d="M60 51L42 82H28l28-48-5-17-37 65H0L47 0h12l6 20h13l-9 16 8 29 37-65h14L81 82H69l-9-31z"
       />
     </svg>
-    Algorand Vanity Address Generator
+    <span class="wordmark">ALGOVANITY</span>
   </a>
-</h1>
+</div>
 
 <style>
-  .header {
-    margin-bottom: 2rem;
-    font-weight: normal;
-    text-align: center;
+  .brand {
+    display: flex;
+    margin-bottom: 1rem;
+  }
+
+  .brand a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: var(--text-white);
   }
 
   .logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    color: #333333;
-  }
-
-  .logo:hover {
-    text-decoration: none;
-  }
-
-  .logo svg {
+    width: 30px;
+    height: auto;
     display: block;
-    width: 128px;
-    height: 82px;
-    margin-bottom: 1rem;
-    fill: currentColor;
-  }
-
-  @media (min-width: 960px) {
-    .logo {
-      flex-direction: row;
-    }
-
-    .logo svg {
-      margin-right: 1rem;
-      margin-bottom: 0;
-    }
   }
 </style>

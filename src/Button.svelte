@@ -8,54 +8,62 @@
 
 <style>
   button {
-    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 42px;
+    color: var(--on-accent);
+    background: var(--accent);
     border: 0;
     border-radius: 0;
-    background: #000000;
     outline: none;
     margin: 0;
-    font-size: inherit;
-    font-weight: normal;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
     font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0 1.4rem;
+    cursor: pointer;
   }
 
-  button[type='submit'] {
-    width: 100%;
+  button:focus-visible {
+    outline: 2px solid var(--text-white);
+    outline-offset: 2px;
   }
 
   button:disabled {
-    background-color: #cccccc;
+    opacity: 0.5;
+    cursor: default;
   }
 
   button:not(:disabled):active {
-    background-color: #333333;
-  }
-
-  .link {
-    background: none;
-    border: none;
-    padding: 0;
-    color: #0a00ff;
-    text-decoration: none;
-    letter-spacing: normal;
-    font-size: inherit;
-    text-transform: inherit;
-  }
-
-  .link:hover {
-    text-decoration: underline;
-  }
-
-  .link:not(:disabled):active {
-    background: none;
+    filter: brightness(0.9);
   }
 
   .small {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.75rem;
+    height: auto;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.65rem;
+  }
+
+  .link {
+    height: auto;
+    background: none;
+    border: 0;
+    padding: 0;
+    color: var(--text);
+    text-transform: none;
+    font-weight: 400;
+    text-decoration: underline;
+  }
+
+  .link:hover {
+    color: var(--text-white);
+  }
+
+  :global(.icon) {
+    width: 13px;
+    height: 13px;
+    flex: none;
   }
 </style>

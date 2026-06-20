@@ -13,9 +13,9 @@ export default defineConfig({
         version: '1.0.0',
         start_url: '/',
         display: 'standalone',
-        background_color: '#fff',
+        background_color: '#0b0f14',
         description: 'Algorand Vanity Address Generator',
-        theme_color: '#000',
+        theme_color: '#0b0f14',
         offline_enabled: true,
         icons: [
           {
@@ -40,6 +40,9 @@ export default defineConfig({
             purpose: 'maskable'
           }
         ]
+      },
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,png,woff,woff2}']
       }
     })
   ]
