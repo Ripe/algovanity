@@ -6,6 +6,7 @@ export default defineConfig({
   plugins: [
     svelte(),
     VitePWA({
+      registerType: 'autoUpdate',
       includeAssets: ['favicon.png', 'apple-touch-icon.png', 'maskable-icon.png'],
       manifest: {
         name: 'Algorand Vanity Address Generator',
@@ -42,7 +43,8 @@ export default defineConfig({
         ]
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,png,woff,woff2}']
+        globPatterns: ['**/*.{js,css,html,png,woff,woff2}'],
+        cleanupOutdatedCaches: true
       }
     })
   ]
