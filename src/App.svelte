@@ -1,6 +1,6 @@
 <script>
   import { onDestroy, onMount } from 'svelte';
-  import AlgoWorker from './algo-worker?worker&inline';
+  import AlgoWorker from './algo-worker?worker';
   import Header from './Header.svelte';
   import FAQs from './Faqs.svelte';
   import Results from './Results.svelte';
