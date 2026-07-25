@@ -1,13 +1,11 @@
 <script>
   import ExternalLink from './ExternalLink.svelte';
-  import { CONTACT_EMAIL } from './constants';
 </script>
 
 <div class="footer">
   <div class="meta">
     <div class="copyright">© 2026 Algo Vanity</div>
     <ul class="links">
-      <li><a href={`mailto:${CONTACT_EMAIL}`}>Contact</a></li>
       <li><ExternalLink href="https://github.com/Ripe/algovanity">Source</ExternalLink></li>
       <li>
         <ExternalLink href="https://github.com/Ripe/algovanity/blob/master/LICENSE"
